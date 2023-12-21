@@ -1,25 +1,21 @@
 import 'dart:ui';
 
-import 'package:fleetcutter_helpers/Enums/device_screen_type.dart';
-import 'package:fleetcutter_helpers/platform_helper.dart';
+import 'package:flutter_misc_helpers/Enums/device_screen_type.dart';
+import 'package:flutter_misc_helpers/platform_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_map_polyline_new/google_map_polyline_new.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_common_widgets/business_layer/config/config.dart';
-import 'package:flutter_common_widgets/business_layer/models/mapping/lat_long.dart';
-import 'package:flutter_common_widgets/business_layer/services/i_logger_service.dart';
-import 'package:flutter_common_widgets/composition_root/dependency_registrant.dart';
+import 'package:flutter_common_widgets/models/lat_long.dart';
 import 'package:flutter_common_widgets/components/map_variant/google_map_view/models/map_cluster_item.dart';
 import 'package:flutter_common_widgets/components/map_variant/i_map_view_controller.dart';
 import 'package:flutter_common_widgets/components/map_variant/map_marker_cluster.dart';
 import 'package:flutter_common_widgets/components/map_variant/map_view_factory.dart';
-import 'package:flutter_common_widgets/presentation_layer/infrastructure/enums/polyline_type.dart';
-import 'package:flutter_common_widgets/presentation_layer/infrastructure/main_app/base_change_notifier.dart';
+import 'package:flutter_common_widgets/models/polyline_type.dart';
 
-class GoogleMapViewModel extends BaseChangeNotifier {
+class GoogleMapViewModel extends ChangeNotifier {
   Set<Circle> circles = {};
 
   final Map<String, Circle> _internalCircles = {};
@@ -33,17 +29,13 @@ class GoogleMapViewModel extends BaseChangeNotifier {
 
   EdgeInsets mapsPadding = EdgeInsets.zero;
 
-  late Config _config;
-
   late ClusterManager clusterManager;
 
   late bool preventMapClustering = false;
+  final String _googleMapsApiKey;
 
-  late final ILoggerService _loggerService;
-
-  GoogleMapViewModel() {
-    _config = DP.get<Config>();
-    _loggerService = DP.get<ILoggerService>();
+  GoogleMapViewModel({required String googleMapsApiKey})
+      : _googleMapsApiKey = googleMapsApiKey {
     initClusterManager();
   }
 
@@ -137,7 +129,7 @@ class GoogleMapViewModel extends BaseChangeNotifier {
     TransportMethod transportMethod = TransportMethod.driving,
   }) async {
     GoogleMapPolyline googleMapPolyline = GoogleMapPolyline(
-      apiKey: _config.getGoogleMapsAPIKey(),
+      apiKey: _googleMapsApiKey,
     );
 
     try {
@@ -174,7 +166,7 @@ class GoogleMapViewModel extends BaseChangeNotifier {
 
       polylines = Set.from(_internalPolylines.values);
     } catch (e) {
-      _loggerService.warning(e.toString());
+      debugPrint(e.toString());
     }
 
     notifyListeners();

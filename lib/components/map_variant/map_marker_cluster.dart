@@ -1,4 +1,4 @@
-import 'package:flutter_common_widgets/business_layer/models/mapping/lat_long.dart';
+import 'package:flutter_common_widgets/models/lat_long.dart';
 import 'package:flutter_common_widgets/components/map_variant/map_marker.dart';
 
 class MapMarkerCluster {

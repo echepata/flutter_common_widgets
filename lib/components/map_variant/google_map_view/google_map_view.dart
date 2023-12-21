@@ -1,43 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_common_widgets/business_layer/config/config.dart';
-import 'package:flutter_common_widgets/business_layer/models/mapping/lat_long.dart';
-import 'package:flutter_common_widgets/composition_root/dependency_provider.dart';
+import 'package:flutter_common_widgets/models/lat_long.dart';
 import 'package:flutter_common_widgets/components/map_variant/google_map_view/google_map_view_controller.dart';
 import 'package:flutter_common_widgets/components/map_variant/google_map_view/view_models/google_map_view_model.dart';
 import 'package:provider/provider.dart';
 
 class GoogleMapView extends StatefulWidget {
-  final void Function() onMapCreated;
-  final void Function(LatLong) onCameraMove;
-  final void Function() onCameraMoveStart;
-  final void Function(LatLong) onCameraIdle;
+  final void Function()? onMapCreated;
+  final void Function(LatLong)? onCameraMove;
+  final void Function()? onCameraMoveStart;
+  final void Function(LatLong)? onCameraIdle;
 
   final GoogleMapsController mapViewController;
 
-  late final LatLong _defaultMapCenter;
-
-  final LatLong? initialCenter;
+  final LatLong initialCenter;
 
   final double initialZoom;
 
   final bool preventPanning;
 
-  GoogleMapView({
+  /// This is a file path to your assets folder, pointing to a JSON file that
+  /// contains the styles for this map
+  final String? lightModeStylesAssetFile;
+
+  /// This is a file path to your assets folder, pointing to a JSON file that
+  /// contains the styles for this map
+  final String? darkModeStylesAssetFile;
+
+  const GoogleMapView({
     super.key,
-    required this.onCameraMoveStart,
-    required this.onCameraIdle,
-    required this.onCameraMove,
-    required this.onMapCreated,
     required this.mapViewController,
-    this.initialCenter,
+    required this.initialCenter,
+    this.onCameraMoveStart,
+    this.onCameraIdle,
+    this.onCameraMove,
+    this.onMapCreated,
     this.initialZoom = 15,
     this.preventPanning = false,
-  }) {
-    Config config = DependencyProvider.get<Config>();
-    _defaultMapCenter = config.getDefaultMapCenter();
-  }
+    this.darkModeStylesAssetFile,
+    this.lightModeStylesAssetFile,
+  });
 
   @override
   State<GoogleMapView> createState() => _GoogleMapViewState();
@@ -51,31 +54,17 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     super.initState();
 
     _lastMapPosition = LatLong(
-      latitude: widget._defaultMapCenter.latitude,
-      longitude: widget._defaultMapCenter.longitude,
+      latitude: widget.initialCenter.latitude,
+      longitude: widget.initialCenter.longitude,
     );
-
-    if (widget.initialCenter != null) {
-      _lastMapPosition = LatLong(
-        latitude: widget.initialCenter!.latitude,
-        longitude: widget.initialCenter!.longitude,
-      );
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     LatLng center = LatLng(
-      widget._defaultMapCenter.latitude,
-      widget._defaultMapCenter.longitude,
+      widget.initialCenter.latitude,
+      widget.initialCenter.longitude,
     );
-
-    if (widget.initialCenter != null) {
-      center = LatLng(
-        widget.initialCenter!.latitude,
-        widget.initialCenter!.longitude,
-      );
-    }
 
     var vm = context.watch<GoogleMapViewModel>();
     return GoogleMap(
@@ -114,7 +103,9 @@ class _GoogleMapViewState extends State<GoogleMapView> {
 
     _lastMapPosition = currentPosition;
 
-    widget.onCameraMove(currentPosition);
+    if (widget.onCameraMove != null) {
+      widget.onCameraMove!(currentPosition);
+    }
 
     if (!vm.preventMapClustering) {
       vm.clusterManager.onCameraMove(position);
@@ -123,7 +114,9 @@ class _GoogleMapViewState extends State<GoogleMapView> {
 
   _onCameraIdle() {
     var vm = context.read<GoogleMapViewModel>();
-    widget.onCameraIdle(_lastMapPosition);
+    if (widget.onCameraIdle != null) {
+      widget.onCameraIdle!(_lastMapPosition);
+    }
     if (!vm.preventMapClustering) {
       vm.clusterManager.updateMap();
     }
@@ -135,7 +128,9 @@ class _GoogleMapViewState extends State<GoogleMapView> {
     widget.mapViewController.setGoogleMapController(googleMapController);
     widget.mapViewController.setGoogleMapViewModel(vm);
     vm.clusterManager.setMapId(googleMapController.mapId);
-    widget.onMapCreated();
+    if (widget.onMapCreated != null) {
+      widget.onMapCreated!();
+    }
   }
 
   @override
@@ -145,10 +140,10 @@ class _GoogleMapViewState extends State<GoogleMapView> {
   }
 
   void updateMapBrightness(GoogleMapController controller) {
-    if (getPlatformBrightness() == Brightness.dark) {
-      _setMapStyle('assets/map_styles/gmaps_night_mode.json', controller);
-    } else {
-      _setMapStyle('assets/map_styles/gmaps_day_mode.json', controller);
+    if (getPlatformBrightness() == Brightness.dark && widget.darkModeStylesAssetFile != null) {
+      _setMapStyle(widget.darkModeStylesAssetFile!, controller);
+    } else if (widget.lightModeStylesAssetFile != null) {
+      _setMapStyle(widget.lightModeStylesAssetFile!, controller);
     }
   }
 

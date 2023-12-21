@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_common_widgets/business_layer/models/mapping/lat_long.dart';
+import 'package:flutter_common_widgets/models/lat_long.dart';
 import 'package:flutter_common_widgets/components/map_variant/map_marker_cluster.dart';
 import 'package:flutter_common_widgets/components/map_variant/map_view_factory.dart';
-import 'package:flutter_common_widgets/presentation_layer/infrastructure/enums/polyline_type.dart';
+import 'package:flutter_common_widgets/models/polyline_type.dart';
 
 abstract class IMapViewController {
   /// If the list of lat long is greater than 1, the zoom level will be ignored.

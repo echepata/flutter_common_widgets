@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_common_widgets/components/buttons/button_size.dart';
-import 'package:flutter_common_widgets/presentation_layer/helpers/global_variables.dart';
+import 'package:flutter_common_widgets/global_variables.dart';
 
 class CustomOutlinedButton extends StatelessWidget {
   final Function()? onPressed;
@@ -45,16 +45,16 @@ class CustomOutlinedButton extends StatelessWidget {
   ButtonStyle getButtonStyle() {
     Map<ButtonSize, ButtonStyle> map = {
       ButtonSize.big: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.all(stdPadding * 2),
+        padding: EdgeInsets.all(GV.stdPadding * 2),
       ),
       ButtonSize.normal: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.all(stdPadding),
+        padding: EdgeInsets.all(GV.stdPadding),
       ),
       ButtonSize.small: OutlinedButton.styleFrom(
         minimumSize: Size.zero,
-        padding: const EdgeInsets.symmetric(
-          horizontal: stdPadding,
-          vertical: stdPadding * .25,
+        padding: EdgeInsets.symmetric(
+          horizontal: GV.stdPadding,
+          vertical: GV.stdPadding * .25,
         ),
         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),

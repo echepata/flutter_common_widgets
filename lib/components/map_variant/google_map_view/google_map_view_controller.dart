@@ -1,29 +1,22 @@
 import 'dart:async';
 
-import 'package:fleetcutter_helpers/location_helpers.dart';
-import 'package:fleetcutter_helpers/string_helper.dart';
+import 'package:flutter_misc_helpers/location_helpers.dart';
+import 'package:flutter_misc_helpers/string_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_common_widgets/business_layer/models/mapping/lat_long.dart';
-import 'package:flutter_common_widgets/business_layer/services/i_logger_service.dart';
-import 'package:flutter_common_widgets/composition_root/dependency_registrant.dart';
+import 'package:flutter_common_widgets/models/lat_long.dart';
 import 'package:flutter_common_widgets/components/map_variant/google_map_view/view_models/google_map_view_model.dart';
 import 'package:flutter_common_widgets/components/map_variant/i_map_view_controller.dart';
 import 'package:flutter_common_widgets/components/map_variant/map_marker_cluster.dart';
 import 'package:flutter_common_widgets/components/map_variant/map_view_factory.dart';
-import 'package:flutter_common_widgets/presentation_layer/helpers/global_variables.dart';
-import 'package:flutter_common_widgets/presentation_layer/infrastructure/enums/polyline_type.dart';
+import 'package:flutter_common_widgets/global_variables.dart';
+import 'package:flutter_common_widgets/models/polyline_type.dart';
 
 class GoogleMapsController extends IMapViewController {
   GoogleMapController? _googleMapController;
   GoogleMapViewModel? _googleMapViewModel;
   LatLong? _lastKnownLocation;
   Timer? _timer;
-  late final ILoggerService _loggerService;
-
-  GoogleMapsController() {
-    _loggerService = DP.get<ILoggerService>();
-  }
 
   void setGoogleMapController(GoogleMapController mapController) {
     _googleMapController = mapController;
@@ -52,7 +45,7 @@ class GoogleMapsController extends IMapViewController {
     if (latLongs.length > 1) {
       final bounds = CameraUpdate.newLatLngBounds(
         _getLatLngBounds(latLongs),
-        stdPadding * 4,
+        GV.stdPadding * 4,
       );
       _googleMapController?.animateCamera(bounds);
     } else {
@@ -91,7 +84,7 @@ class GoogleMapsController extends IMapViewController {
     if (_lastKnownLocation is LatLong) {
       moveMapCenter([_lastKnownLocation!]);
     } else {
-      _loggerService.debug('Unknown');
+      debugPrint("Unknown device location");
     }
   }
 

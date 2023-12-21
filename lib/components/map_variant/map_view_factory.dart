@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_common_widgets/business_layer/config/config.dart';
-import 'package:flutter_common_widgets/business_layer/models/mapping/lat_long.dart';
-import 'package:flutter_common_widgets/composition_root/dependency_provider.dart';
+import 'package:flutter_common_widgets/models/lat_long.dart';
 import 'package:flutter_common_widgets/components/map_variant/blank_map_view.dart';
 import 'package:flutter_common_widgets/components/map_variant/blank_map_view_controller.dart';
 import 'package:flutter_common_widgets/components/map_variant/google_map_view/google_map_view.dart';
 import 'package:flutter_common_widgets/components/map_variant/google_map_view/google_map_view_controller.dart';
 import 'package:flutter_common_widgets/components/map_variant/google_map_view/view_models/google_map_view_model.dart';
 import 'package:flutter_common_widgets/components/map_variant/i_map_view_controller.dart';
+import 'package:flutter_common_widgets/models/map_provider.dart';
 import 'package:provider/provider.dart';
 
 class MapViewFactory {
-  late final Config config;
-  MapProvider _selectedMapType = MapProvider.noMaps;
+  final MapProvider selectedMapType;
   Widget? _mapInstance;
-
-  // IMapViewController? _mapViewController;
+  final String googleMapsApiKey;
 
   static const Map<ZoomLevel, double> googleZoomLevelMap = {
     ZoomLevel.city: 10,
@@ -24,10 +21,20 @@ class MapViewFactory {
     ZoomLevel.street: 17,
   };
 
-  MapViewFactory() {
-    config = DependencyProvider.get<Config>();
-    _selectedMapType = config.getMapProvider();
-  }
+  /// This is a file path to your assets folder, pointing to a JSON file that
+  /// contains the styles for this map
+  final String? googleDarkModeStyleFile;
+
+  /// This is a file path to your assets folder, pointing to a JSON file that
+  /// contains the styles for this map
+  final String? googleLightModeStyleFile;
+
+  MapViewFactory({
+    required this.selectedMapType,
+    required this.googleMapsApiKey,
+    required this.googleDarkModeStyleFile,
+    required this.googleLightModeStyleFile,
+  });
 
   MapViewFactoryResult make({
     Function(LatLong)? onCameraMove,
@@ -37,19 +44,21 @@ class MapViewFactory {
     required Function(IMapViewController mapViewController) onMapCreated,
     Function(LatLong? latLong, IMapViewController mapViewController)?
         onFirstFix,
-    LatLong? initialCenter,
+    required LatLong initialCenter,
     ZoomLevel? initialZoom = ZoomLevel.neighborhood,
     bool preventPanning = false,
   }) {
     IMapViewController mapViewController;
-    // if (_mapInstance == null) {
-    switch (_selectedMapType) {
+
+    switch (selectedMapType) {
       case MapProvider.googleMaps:
         mapViewController = GoogleMapsController();
         _mapInstance = MultiProvider(
           providers: [
             ChangeNotifierProvider<GoogleMapViewModel>(
-              create: (_) => GoogleMapViewModel(),
+              create: (_) => GoogleMapViewModel(
+                googleMapsApiKey: googleMapsApiKey,
+              ),
             ),
           ],
           child: GoogleMapView(
@@ -68,6 +77,8 @@ class MapViewFactory {
             initialCenter: initialCenter,
             initialZoom: googleZoomLevelMap[initialZoom]!,
             preventPanning: preventPanning,
+            darkModeStylesAssetFile: googleDarkModeStyleFile,
+            lightModeStylesAssetFile: googleLightModeStyleFile,
           ),
         );
 
@@ -81,7 +92,6 @@ class MapViewFactory {
         mapViewController = BlankMapViewController();
         break;
     }
-    // }
 
     if (_mapInstance == null) {
       return MapViewFactoryResult(

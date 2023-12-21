@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_common_widgets/components/column_with_gaps.dart';
 import 'package:flutter_common_widgets/components/headings.dart';
 import 'package:flutter_common_widgets/components/theme_extension.dart';
-import 'package:flutter_common_widgets/presentation_layer/helpers/global_variables.dart';
+import 'package:flutter_common_widgets/global_variables.dart';
 
 class CustomAlertDialog extends StatelessWidget {
   final String title;
@@ -21,11 +21,11 @@ class CustomAlertDialog extends StatelessWidget {
     final theme = Theme.of(context);
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(stdPadding),
+        borderRadius: BorderRadius.circular(GV.stdPadding),
       ),
       child: Container(
         width: 400,
-        padding: const EdgeInsets.all(stdPadding),
+        padding: EdgeInsets.all(GV.stdPadding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.end,

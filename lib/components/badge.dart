@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_common_widgets/presentation_layer/helpers/global_variables.dart';
+import 'package:flutter_common_widgets/global_variables.dart';
 
 /// @author    Diego
 /// @since     2022-07-07
@@ -37,17 +37,17 @@ class Badge extends StatelessWidget {
   }
 
   EdgeInsets getPadding() {
-    const quarter = stdPadding * .25;
+    double quarter = GV.stdPadding * .25;
     Map<BadgeSize, EdgeInsets> map = {
-      BadgeSize.big: const EdgeInsets.symmetric(
+      BadgeSize.big: EdgeInsets.symmetric(
         vertical: quarter,
         horizontal: quarter * 3,
       ),
-      BadgeSize.normal: const EdgeInsets.symmetric(
+      BadgeSize.normal: EdgeInsets.symmetric(
         vertical: quarter,
         horizontal: quarter * 2,
       ),
-      BadgeSize.small: const EdgeInsets.symmetric(
+      BadgeSize.small: EdgeInsets.symmetric(
         vertical: quarter / 2,
         horizontal: quarter,
       ),

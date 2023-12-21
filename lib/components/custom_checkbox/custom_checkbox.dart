@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_common_widgets/components/row_with_gaps.dart';
-import 'package:flutter_common_widgets/presentation_layer/helpers/global_variables.dart';
+import 'package:flutter_common_widgets/global_variables.dart';
 
 class CustomCheckbox extends StatefulWidget {
   final Widget title;
@@ -40,7 +40,7 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
       excludeSemantics: true,
       child: GestureDetector(
         child: RowWithGaps(
-          gap: 0.5 * stdPadding,
+          gap: 0.5 * GV.stdPadding,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment:
               widget.crossAxisAlignment ?? CrossAxisAlignment.center,

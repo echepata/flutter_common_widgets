@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_common_widgets/components/basic_form_field.dart';
 import 'package:flutter_common_widgets/components/row_with_gaps.dart';
-import 'package:flutter_common_widgets/presentation_layer/helpers/global_variables.dart';
+import 'package:flutter_common_widgets/global_variables.dart';
 
 class EditableFormField extends StatelessWidget {
   final String labelText;
@@ -71,7 +71,7 @@ class EditableFormField extends StatelessWidget {
             enabled: !isLoading,
             suffixIcon: isLoading
                 ? Container(
-                    padding: const EdgeInsets.only(right: stdPadding),
+                    padding: EdgeInsets.only(right: GV.stdPadding),
                     height: 20,
                     width: 40,
                     child: const CircularProgressIndicator(),

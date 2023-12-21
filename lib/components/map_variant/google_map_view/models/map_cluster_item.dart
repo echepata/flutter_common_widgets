@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_maps_cluster_manager/google_maps_cluster_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_common_widgets/business_layer/models/mapping/lat_long.dart';
+import 'package:flutter_common_widgets/models/lat_long.dart';
 
 class MapClusterItem extends ClusterItem {
   final LatLong latLong;

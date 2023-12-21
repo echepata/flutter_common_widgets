@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_common_widgets/business_layer/models/mapping/lat_long.dart';
+import 'package:flutter_common_widgets/models/lat_long.dart';
 
 class MapMarker {
   final String name;

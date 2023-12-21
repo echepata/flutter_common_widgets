@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_common_widgets/presentation_layer/helpers/global_variables.dart';
+import 'package:flutter_common_widgets/global_variables.dart';
 
 class RowWithGaps extends StatelessWidget {
   late final double gap;
@@ -24,7 +24,7 @@ class RowWithGaps extends StatelessWidget {
     this.verticalDirection = VerticalDirection.down,
     this.textBaseline,
   }) {
-    this.gap = gap ?? stdPadding;
+    this.gap = gap ?? GV.stdPadding;
   }
 
   @override

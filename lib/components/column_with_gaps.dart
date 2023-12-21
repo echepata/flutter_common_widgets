@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_common_widgets/presentation_layer/helpers/global_variables.dart';
+import 'package:flutter_common_widgets/global_variables.dart';
 
 /// Consider using the Wrap widget instead
 class ColumnWithGaps extends StatelessWidget {
@@ -25,7 +25,7 @@ class ColumnWithGaps extends StatelessWidget {
     this.verticalDirection = VerticalDirection.down,
     this.textBaseline,
   }) {
-    this.gap = gap ?? stdPadding;
+    this.gap = gap ?? GV.stdPadding;
   }
 
   @override

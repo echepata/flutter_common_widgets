@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_common_widgets/components/column_with_gaps.dart';
 import 'package:flutter_common_widgets/components/row_with_gaps.dart';
-import 'package:flutter_common_widgets/presentation_layer/helpers/global_variables.dart';
+import 'package:flutter_common_widgets/global_variables.dart';
 
 /// This widget can be used to switch easily between a column and a row with gaps
 class ListWithGaps extends StatelessWidget {
@@ -17,10 +17,10 @@ class ListWithGaps extends StatelessWidget {
   final List<Widget> children;
   final ListDirection listDirection;
 
-  const ListWithGaps({
+  ListWithGaps({
     super.key,
     required this.children,
-    this.gap = stdPadding,
+    double? gap,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.mainAxisSize = MainAxisSize.max,
     this.crossAxisAlignment = CrossAxisAlignment.start,
@@ -28,7 +28,8 @@ class ListWithGaps extends StatelessWidget {
     this.verticalDirection = VerticalDirection.down,
     this.textBaseline,
     ListDirection? listDirection,
-  }) : listDirection = listDirection ?? ListDirection.vertical;
+  })  : listDirection = listDirection ?? ListDirection.vertical,
+        gap = gap ?? GV.stdPadding;
 
   @override
   Widget build(BuildContext context) {

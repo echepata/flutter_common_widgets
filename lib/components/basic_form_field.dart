@@ -1,4 +1,4 @@
-import 'package:fleetcutter_helpers/string_helper.dart';
+import 'package:flutter_misc_helpers/string_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';

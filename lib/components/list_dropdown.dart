@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_common_widgets/components/row_with_gaps.dart';
-import 'package:flutter_common_widgets/presentation_layer/helpers/global_variables.dart';
+import 'package:flutter_common_widgets/global_variables.dart';
 
 class CustomDropdown<T> extends StatefulWidget {
   /// the child widget for the button, this will be ignored if text is supplied
@@ -110,7 +110,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
         ),
         if (widget.label is String)
           Positioned(
-            top: -8 * MediaQuery.textScaleFactorOf(context),
+            top: MediaQuery.textScalerOf(context).scale(8) * -1,
             left: inputTheme.contentPadding!.horizontal / 2 - 4,
             child: Container(
               decoration: BoxDecoration(
@@ -251,7 +251,7 @@ class _CustomDropdownState<T> extends State<CustomDropdown<T>>
             );
           },
           separatorBuilder: (context, index) {
-            return const SizedBox(height: stdPadding);
+            return SizedBox(height: GV.stdPadding);
           },
           itemCount: widget.items.asMap().entries.length,
         ),
